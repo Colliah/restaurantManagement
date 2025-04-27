@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
+  Table,
   TableHeader,
   TableRow,
   TableHead,
@@ -11,7 +12,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {
   ColumnDef,
   SortingState,
@@ -24,9 +25,11 @@ import {
   getFilteredRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import { ChevronDown, Table } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import React from "react";
+import SheetRecipes from "@/components/sheet-recipes";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -65,7 +68,7 @@ const DataTable = <TData, TValue>({
     <div className="container mx-auto w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter ingredient..."
+          placeholder="Filter recipes..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -98,6 +101,7 @@ const DataTable = <TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <SheetRecipes />
       </div>
       <div className="rounded-md border">
         <Table>

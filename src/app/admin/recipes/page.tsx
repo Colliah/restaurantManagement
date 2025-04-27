@@ -23,8 +23,10 @@ const data: Recipe[] = [
   },
 ];
 function RecipesPage() {
-  <div>
-    <DataTable columns={columns} data={data} />
-  </div>;
+  return (
+    <div>
+      <DataTable columns={columns} data={data} />
+    </div>
+  );
 }
 export default RecipesPage;

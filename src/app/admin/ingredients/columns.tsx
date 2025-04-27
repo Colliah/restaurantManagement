@@ -96,22 +96,22 @@ export const columns: ColumnDef<Ingredient>[] = [
       <div className="text-center">{row.getValue("costPerUnit")}</div>
     ),
   },
-  {
-    accessorKey: "createdAt",
-    header: "Created At",
-    cell: ({ row }) => {
-      const date: Date = row.getValue("createdAt");
-      const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
-      return <div>{formattedDate}</div>;
-    },
-  },
-  {
-    accessorKey: "updatedAt",
-    header: "Updated At",
-    cell: ({ row }) => {
-      const date: Date = row.getValue("updatedAt");
-      const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
-      return <div>{formattedDate}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "createdAt",
+  //   header: "Created At",
+  //   cell: ({ row }) => {
+  //     const date: Date = row.getValue("createdAt");
+  //     const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
+  //     return <div>{formattedDate}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "updatedAt",
+  //   header: "Updated At",
+  //   cell: ({ row }) => {
+  //     const date: Date = row.getValue("updatedAt");
+  //     const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
+  //     return <div>{formattedDate}</div>;
+  //   },
+  // },
 ];
