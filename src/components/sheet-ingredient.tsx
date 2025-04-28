@@ -132,7 +132,6 @@ const SheetIngredient = () => {
               )}
             />
             <SheetFooter>
-              {/* <Button type="button">Cancel</Button> */}
               <Button type="submit">Submit</Button>
             </SheetFooter>
           </form>

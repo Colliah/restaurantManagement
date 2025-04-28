@@ -59,17 +59,7 @@ const allIngredients = [
 
 // Updated form schema
 const formSchema = z.object({
-  foodItem: z
-    .object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      price: z.number(),
-      category: z.string(),
-      isAvailable: z.boolean(),
-      imageUrl: z.string().optional(),
-    })
-    .optional(),
+  foodItemId: z.string(),
   instructions: z.string().min(1, "Instructions are required"),
   preparationTime: z.coerce
     .number()
@@ -89,7 +79,7 @@ const SheetRecipes = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      foodItem: undefined,
+      foodItemId: "",
       instructions: "",
       preparationTime: 0,
       ingredients: [],
@@ -153,20 +143,17 @@ const SheetRecipes = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="foodItem"
+              name="foodItemId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     Food Item <span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
-                    onValueChange={(foodId) => {
-                      const selectedFood = foodItem.find(
-                        (food) => food.id === foodId,
-                      );
-                      field.onChange(selectedFood);
+                    onValueChange={(foodItemId) => {
+                      field.onChange(foodItemId);
                     }}
-                    value={field.value?.id}
+                    value={field.value || ""}
                   >
                     <FormControl>
                       <SelectTrigger>

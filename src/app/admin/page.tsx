@@ -238,7 +238,7 @@
 // };
 
 // export default page;
-const page = () => {
-  return <div>page</div>;
+const Page = () => {
+  return <div>Page</div>;
 };
-export default page;
+export default Page;
