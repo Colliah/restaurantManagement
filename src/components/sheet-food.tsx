@@ -3,7 +3,6 @@ import React from "react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -11,7 +10,7 @@ import {
 } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Form, FormDescription } from "./ui/form";
+import { Form } from "./ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,35 +28,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-export enum Unit {
-  GRAM = "g",
-  KILOGRAM = "kg",
-  LITER = "l",
-  MILLILITER = "ml",
-  PIECES = "pieces",
-}
+import { Textarea } from "./ui/textarea";
+import { Switch } from "./ui/switch";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  unit: z.nativeEnum(Unit),
+  description: z.string().min(2, {
+    message: "Description must be at least 2 characters.",
+  }),
+  price: z.number().min(0, {
+    message: "Price must be at least 1.",
+  }),
   category: z
     .string()
     .min(2, {
       message: "Category must be at least 2 characters.",
     })
     .optional(),
+  isAvailable: z.boolean().optional(),
+  imageUrl: z.string(),
 });
 
-const SheetIngredient = () => {
+const SheetFood = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      unit: undefined,
+      description: "",
+      price: 0,
       category: "",
+      isAvailable: false,
+      imageUrl: "",
     },
   });
 
@@ -71,7 +74,7 @@ const SheetIngredient = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="mb-8">
-          <SheetTitle>Ingredients</SheetTitle>
+          <SheetTitle>Food</SheetTitle>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -92,28 +95,30 @@ const SheetIngredient = () => {
             />
             <FormField
               control={form.control}
-              name="unit"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Unit <span className="text-red-500">*</span>
+                    Description <span className="text-red-500">*</span>
                   </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.values(Unit).map((v) => (
-                        <SelectItem value={v}>{v}</SelectItem>
-                      ))}
-                      {/* Fooditem.id || .name */}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <Textarea placeholder="" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Price <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -131,6 +136,36 @@ const SheetIngredient = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="isAvailable"
+              render={({ field }) => (
+                <FormItem className="space-x-6">
+                  <FormLabel>Available</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image Url</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <SheetFooter>
               <Button type="submit">Submit</Button>
             </SheetFooter>
@@ -141,4 +176,4 @@ const SheetIngredient = () => {
   );
 };
 
-export default SheetIngredient;
+export default SheetFood;
