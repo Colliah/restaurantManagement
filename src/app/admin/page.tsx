@@ -223,10 +223,22 @@
 //     )
 // }
 // export default MainPage
-import React from "react";
+// 'use client'
+// import React from "react";
 
-const page = () => {
-  return <div>page</div>;
+// import { useEditor, EditorContent } from '@tiptap/react'
+// import StarterKit from '@tiptap/starter-kit'
+// const page = () => {
+//   const editor = useEditor({
+//     extensions: [StarterKit],
+//     content: '<p>Hello World! 🌎️</p>',
+//   })
+
+//   return <EditorContent editor={editor} />
+// };
+
+// export default page;
+const Page = () => {
+  return <div>Page</div>;
 };
-
-export default page;
+export default Page;

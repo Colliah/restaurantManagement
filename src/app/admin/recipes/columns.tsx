@@ -1,4 +1,4 @@
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 
 export type Recipe = {
@@ -65,22 +65,22 @@ export const columns: ColumnDef<Recipe>[] = [
       <div className="text-center">{row.getValue("preparationTime")}</div>
     ),
   },
-  {
-    accessorKey: "createdAt",
-    header: "Created At",
-    cell: ({ row }) => {
-      const date: Date = row.getValue("createdAt");
-      const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
-      return <div>{formattedDate}</div>;
-    },
-  },
-  {
-    accessorKey: "updatedAt",
-    header: "Updated At",
-    cell: ({ row }) => {
-      const date: Date = row.getValue("updatedAt");
-      const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
-      return <div>{formattedDate}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "createdAt",
+  //   header: "Created At",
+  //   cell: ({ row }) => {
+  //     const date: Date = row.getValue("createdAt");
+  //     const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
+  //     return <div>{formattedDate}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "updatedAt",
+  //   header: "Updated At",
+  //   cell: ({ row }) => {
+  //     const date: Date = row.getValue("updatedAt");
+  //     const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
+  //     return <div>{formattedDate}</div>;
+  //   },
+  // },
 ];
