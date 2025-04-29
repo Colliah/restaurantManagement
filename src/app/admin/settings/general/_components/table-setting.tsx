@@ -13,9 +13,29 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -25,24 +45,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TableItem, TableStatus } from "@/types/table";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Edit, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 export default function TableSetting() {
   const [tables, setTables] = useState<TableItem[]>([
-    { id: 1, name: "Table 1", capacity: 2, status: "available" },
-    { id: 2, name: "Table 2", capacity: 4, status: "occupied" },
-    { id: 3, name: "Table 3", capacity: 4, status: "maintenance" },
-    { id: 4, name: "Table 4", capacity: 6, status: "available" },
-    { id: 5, name: "Table 5", capacity: 2, status: "reserved" },
-    { id: 6, name: "Table 6", capacity: 8, status: "available" },
-    { id: 7, name: "Table 7", capacity: 4, status: "occupied" },
-    { id: 8, name: "Table 8", capacity: 2, status: "available" },
-    { id: 9, name: "Table 9", capacity: 6, status: "maintenance" },
-    { id: 10, name: "Table 10", capacity: 4, status: "available" },
-    { id: 11, name: "Table 11", capacity: 2, status: "occupied" },
-    { id: 12, name: "Table 12", capacity: 8, status: "available" },
+    { number: 1, capacity: 2, status: "available" },
+    { number: 2, capacity: 4, status: "occupied" },
+    { number: 3, capacity: 4, status: "maintenance" },
+    { number: 4, capacity: 6, status: "available" },
+    { number: 5, capacity: 2, status: "reserved" },
+    { number: 6, capacity: 8, status: "available" },
+    { number: 7, capacity: 4, status: "occupied" },
+    { number: 8, capacity: 2, status: "available" },
+    { number: 9, capacity: 6, status: "maintenance" },
+    { number: 10, capacity: 4, status: "available" },
+    { number: 11, capacity: 2, status: "occupied" },
+    { number: 12, capacity: 8, status: "available" },
   ]);
 
   const getStatusColor = (status: TableStatus) => {
@@ -63,11 +86,23 @@ export default function TableSetting() {
   const getStatusBadge = (status: TableStatus) => {
     switch (status) {
       case "available":
-        return <Badge className="bg-green-100 text-green-800 hover:text-white">Available</Badge>;
+        return (
+          <Badge className="bg-green-100 text-green-800 hover:text-white">
+            Available
+          </Badge>
+        );
       case "occupied":
-        return <Badge className="bg-red-100 text-red-800 hover:text-white">Occupied</Badge>;
+        return (
+          <Badge className="bg-red-100 text-red-800 hover:text-white">
+            Occupied
+          </Badge>
+        );
       case "reserved":
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:text-white">Reserved</Badge>;
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 hover:text-white">
+            Reserved
+          </Badge>
+        );
       case "maintenance":
         return <Badge className="bg-gray-500 text-white">Maintenance</Badge>;
       default:
@@ -113,9 +148,9 @@ export default function TableSetting() {
             </TableHeader>
             <TableBody>
               {tables.map((table) => (
-                <TableRow key={table.id}>
-                  <TableCell>{table.id}</TableCell>
-                  <TableCell>{table.name}</TableCell>
+                <TableRow key={table.number}>
+                  <TableCell>{table.number}</TableCell>
+                  <TableCell>Bàn {table.number}</TableCell>
                   <TableCell>{table.capacity} seats</TableCell>
                   <TableCell>{getStatusBadge(table.status)}</TableCell>
                   <TableCell className="text-right">
@@ -158,7 +193,26 @@ interface TableFormProps {
   mode: "create" | "edit";
 }
 
+const tableFormSchema = z.object({
+  number: z.coerce.number().min(1).max(100),
+  capacity: z.coerce.number().min(1).max(10),
+  status: z.enum(["available", "occupied", "reserved", "maintenance"]),
+});
+
 function TableForm({ mode }: TableFormProps) {
+  const form = useForm<z.infer<typeof tableFormSchema>>({
+    resolver: zodResolver(tableFormSchema),
+    defaultValues: {
+      number: 0,
+      capacity: 0,
+      status: undefined,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof tableFormSchema>) {
+    console.log(values);
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -178,9 +232,89 @@ function TableForm({ mode }: TableFormProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          {" "}
-          {mode === "create" ? "Add Table" : "Edit Table"}
+          <DialogTitle>
+            {mode === "create" ? "Add Table" : "Edit Table"}
+          </DialogTitle>
+          <DialogDescription>
+            {mode === "create" ? "Create a new" : "Edit"} table for your
+            restaurant.
+          </DialogDescription>
         </DialogHeader>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid gap-4 py-4"
+          >
+            <FormField
+              control={form.control}
+              name="number"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel>Table number</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input
+                        placeholder="Table number"
+                        {...field}
+                        type="number"
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="capacity"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel>Capacity</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input placeholder="Table capacity" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel>Status</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl className="col-span-3">
+                        <SelectTrigger className="col-span-3">
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="available">Available</SelectItem>
+                        <SelectItem value="occupied">Occupied</SelectItem>
+                        <SelectItem value="reserved">Reserved</SelectItem>
+                        <SelectItem value="maintenance">Maintenance</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

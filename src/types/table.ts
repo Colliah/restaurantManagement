@@ -1,6 +1,7 @@
 export interface TableItem {
-  id: number;
-  name: string;
+  id?: string;
+  number: number;
+  qrCode?: string;
   capacity: number;
   status: TableStatus;
 }
