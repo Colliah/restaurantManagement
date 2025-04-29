@@ -1,6 +1,5 @@
-import Image from "next/image";
-import { redirect } from "next/navigation";
+import PosSystem from "@/components/pos/pos-system";
 
 export default function Home() {
-  redirect("/admin");
+  return <PosSystem />;
 }
