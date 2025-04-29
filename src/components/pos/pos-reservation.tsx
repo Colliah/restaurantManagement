@@ -11,8 +11,40 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Calendar } from "lucide-react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+
+const reservationSchema = z.object({
+  name: z.string().min(1, { message: "Please provide name" }),
+  phone: z.string().min(1, { message: "Please provide phone" }),
+  email: z.string().min(1, { message: "Please provide email" }).email(),
+  table: z.string(),
+});
 
 export default function PosReservation() {
+  const form = useForm<z.infer<typeof reservationSchema>>({
+    resolver: zodResolver(reservationSchema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      table: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof reservationSchema>) {
+    console.log(values);
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -25,26 +57,71 @@ export default function PosReservation() {
         <DialogHeader>
           <DialogTitle>Reservation</DialogTitle>
           <DialogDescription>
-            Reserve a table by selecting the date, time, and number of guests.
+            Fill in the details to create a new reservation.{" "}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid gap-4 py-4"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel>Customer name</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input placeholder="Customer name" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel>Phone</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input placeholder="xxxx-xxx-xxx" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel>Email</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input
+                        placeholder="example@gmail.com"
+                        type="email"
+                        {...field}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

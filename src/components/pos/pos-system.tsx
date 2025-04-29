@@ -18,7 +18,11 @@ export default function PosSystem() {
         <div className="flex h-full flex-1 flex-col">
           <div className="grid h-full grid-cols-3 gap-4 p-4">
             <div className="col-span-2 overflow-auto rounded-xl border bg-white shadow">
-              <Tabs className="mt-4 mx-4" value={activeTab} onValueChange={setActiveTab}>
+              <Tabs
+                className="mt-4 mx-4"
+                value={activeTab}
+                onValueChange={setActiveTab}
+              >
                 <TabsList className="inline-flex w-auto">
                   <TabsTrigger value="tables">Tables</TabsTrigger>
                   <TabsTrigger value="menu">Menu</TabsTrigger>
