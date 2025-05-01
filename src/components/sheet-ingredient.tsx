@@ -35,7 +35,7 @@ export enum Unit {
   KILOGRAM = "kg",
   LITER = "l",
   MILLILITER = "ml",
-  PEICES = "pieces",
+  PIECES = "pieces",
 }
 
 const formSchema = z.object({

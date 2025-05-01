@@ -2,18 +2,10 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
   NotebookTabs,
   CookingPot,
+  ChefHat,
 } from "lucide-react";
 
 import { NavMain } from "@/components/sidebar/nav-main";
@@ -73,6 +65,18 @@ const data = {
         {
           title: "Manage",
           url: "/admin/ingredients/",
+        },
+      ],
+    },
+    {
+      title: "Food",
+      url: "#",
+      icon: ChefHat,
+      isActive: true,
+      items: [
+        {
+          title: "Manage",
+          url: "/admin/food/",
         },
       ],
     },
