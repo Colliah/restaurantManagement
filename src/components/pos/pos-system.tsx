@@ -34,7 +34,7 @@ export default function PosSystem() {
                   />
                 </TabsContent>
                 <TabsContent value="menu">
-                  <MenuSelection />
+                  <MenuSelection onAddToCart={() => void (0)} />
                 </TabsContent>
               </Tabs>
             </div>
