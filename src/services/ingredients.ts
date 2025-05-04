@@ -11,12 +11,12 @@ export const ingredientsApi = {
     return response.data;
   },
 
-  async updateIngredient(ingredientId:string, data: any) {
+  async updateIngredient(ingredientId: string, data: any) {
     const response = await instance.patch(`/ingredients/${ingredientId}`, data);
     return response.data;
   },
 
-  async deleteIngredient(ingredientId:string) {
+  async deleteIngredient(ingredientId: string) {
     const response = await instance.delete(`/ingredients/${ingredientId}`);
     return response.data;
   },

@@ -94,7 +94,7 @@ export const columns: ColumnDef<Ingredient>[] = [
             disabled={mutationDelete.isPending}
           >
             {mutationDelete.isPending ? (
-              <Loader2 className="animate-spin"/>
+              <Loader2 className="animate-spin" />
             ) : (
               <Trash2 className="text-red-600" />
             )}

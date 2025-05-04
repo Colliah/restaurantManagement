@@ -77,7 +77,7 @@ const SheetIngredient = ({
     },
     onSuccess: () => {
       toast.success(
-        mode === "create" ? "Ingredient created" : "Ingredient updated"
+        mode === "create" ? "Ingredient created" : "Ingredient updated",
       );
       form.reset();
       queryClient.invalidateQueries({ queryKey: ["ingredients"] });

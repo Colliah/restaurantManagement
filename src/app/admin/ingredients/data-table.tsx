@@ -33,13 +33,13 @@ import SheetIngredient from "@/components/sheet-ingredient";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  isLoading?: boolean; 
+  isLoading?: boolean;
 }
 
 const DataTable = <TData, TValue>({
   columns,
   data,
-  isLoading = false, 
+  isLoading = false,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
