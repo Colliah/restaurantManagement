@@ -266,7 +266,9 @@ export const FileUploaderContent = forwardRef<
         ref={ref}
         className={cn(
           "flex rounded-xl gap-4",
-          orientation === "horizontal" ? "flex-row flex-nowrap overflow-x-auto" : "flex-col",
+          orientation === "horizontal"
+            ? "flex-row flex-nowrap overflow-x-auto"
+            : "flex-col",
           className,
         )}
       >

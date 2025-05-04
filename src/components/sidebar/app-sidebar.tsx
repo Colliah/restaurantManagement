@@ -6,6 +6,7 @@ import {
   NotebookTabs,
   CookingPot,
   ChefHat,
+  Calendar1,
 } from "lucide-react";
 
 import { NavMain } from "@/components/sidebar/nav-main";
@@ -44,6 +45,12 @@ const data = {
     // },
   ],
   navMain: [
+    {
+      title: "Daily Summary",
+      url: "#",
+      icon: Calendar1,
+      isActive: true,
+    },
     {
       title: "Recipes",
       url: "/admin/recipes",

@@ -208,7 +208,7 @@ const SheetFood = () => {
                                     className="absolute top-0 right-0 text-white bg-red-500 p-1 rounded-full"
                                     onClick={() => {
                                       const newFiles = files.filter(
-                                        (_, index) => index !== i
+                                        (_, index) => index !== i,
                                       );
                                       setFiles(newFiles);
                                     }}
