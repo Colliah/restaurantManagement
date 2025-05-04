@@ -1,18 +1,33 @@
-"use client"
+"use client";
 
-import { Checkbox } from "../ui/checkbox"
-import { Separator } from "../ui/separator"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs"
-import { Grid, Beef, Pizza, Salad, Sandwich, Soup, Cookie, Coffee, Star, Clock, Filter, List, Plus, Search } from "lucide-react"
-import { Input } from "../ui/input"
-import { useState } from "react"
-import { Label } from "../ui/label"
-import { Badge } from "../ui/badge"
-import { Button } from "../ui/button"
-import { Card, CardContent, CardFooter } from "../ui/card"
-import Image from "next/image"
-import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover"
-import { ScrollArea } from "../ui/scroll-area"
+import { Checkbox } from "../ui/checkbox";
+import { Separator } from "../ui/separator";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs";
+import {
+  Grid,
+  Beef,
+  Pizza,
+  Salad,
+  Sandwich,
+  Soup,
+  Cookie,
+  Coffee,
+  Star,
+  Clock,
+  Filter,
+  List,
+  Plus,
+  Search,
+} from "lucide-react";
+import { Input } from "../ui/input";
+import { useState } from "react";
+import { Label } from "../ui/label";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardFooter } from "../ui/card";
+import Image from "next/image";
+import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import { ScrollArea } from "../ui/scroll-area";
 
 const menuItems: any[] = [
   {
@@ -137,21 +152,20 @@ const menuItems: any[] = [
   },
 ];
 
-
 interface MenuSectionProps {
-  onAddToCart: (menuItem: any) => void
+  onAddToCart: (menuItem: any) => void;
 }
 
 export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50])
-  const [showFilters, setShowFilters] = useState(false)
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50]);
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const uniqueCategories = Array.from(new Set(menuItems.map((item) => item.category)))
-  const categories = ["all", ...uniqueCategories.sort()]
+  // const uniqueCategories = Array.from(new Set(menuItems.map((item) => item.category)))
+  // const categories = ["all", ...uniqueCategories.sort()]
 
   const categoryTabs = [
     { value: "all", name: "All Items", icon: Grid },
@@ -165,7 +179,7 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
     { value: "beverages", name: "Beverages", icon: Coffee },
     { value: "favorites", name: "Favorites", icon: Star },
     { value: "specials", name: "Specials", icon: Clock },
-  ]
+  ];
 
   // Filter options
   const filterOptions = [
@@ -174,43 +188,56 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
     { id: "spicy", label: "Spicy" },
     { id: "popular", label: "Popular" },
     { id: "new", label: "New Items" },
-  ]
+  ];
 
   const toggleFilter = (filterId: string) => {
-    setSelectedFilters((prev) => (prev.includes(filterId) ? prev.filter((id) => id !== filterId) : [...prev, filterId]))
-  }
+    setSelectedFilters((prev) =>
+      prev.includes(filterId)
+        ? prev.filter((id) => id !== filterId)
+        : [...prev, filterId],
+    );
+  };
 
   const filteredItems = menuItems.filter((item) => {
-    const matchesCategory = selectedCategory === "all" || item.category === selectedCategory
+    const matchesCategory =
+      selectedCategory === "all" || item.category === selectedCategory;
     const matchesSearch =
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesPriceRange = item.price >= priceRange[0] && item.price <= priceRange[1]
+      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesPriceRange =
+      item.price >= priceRange[0] && item.price <= priceRange[1];
 
     // In a real app, you would have actual data for these filters
     // This is just a placeholder implementation
     const matchesFilters =
       selectedFilters.length === 0 ||
       selectedFilters.some((filter) => {
-        if (filter === "vegetarian" && (item.category === "salads" || item.id === "13")) return true
-        if (filter === "gluten-free" && item.category === "salads") return true
-        if (filter === "spicy" && item.id === "10") return true
-        if (filter === "popular" && ["1", "3", "7", "10"].includes(item.id)) return true
-        if (filter === "new" && ["13", "14", "15"].includes(item.id)) return true
-        return false
-      })
+        if (
+          filter === "vegetarian" &&
+          (item.category === "salads" || item.id === "13")
+        )
+          return true;
+        if (filter === "gluten-free" && item.category === "salads") return true;
+        if (filter === "spicy" && item.id === "10") return true;
+        if (filter === "popular" && ["1", "3", "7", "10"].includes(item.id))
+          return true;
+        if (filter === "new" && ["13", "14", "15"].includes(item.id))
+          return true;
+        return false;
+      });
 
-    return matchesCategory && matchesSearch && matchesPriceRange && matchesFilters
-  })
+    return (
+      matchesCategory && matchesSearch && matchesPriceRange && matchesFilters
+    );
+  });
 
   const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value)
-  }
-
+    setSelectedCategory(value);
+  };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex flex-col sm:flex-row gap-2 mb-4">
+    <div className="flex h-full flex-col">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -242,7 +269,10 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                   <h5 className="text-sm font-medium">Dietary Preferences</h5>
                   <div className="grid grid-cols-2 gap-2">
                     {filterOptions.map((option) => (
-                      <div key={option.id} className="flex items-center space-x-2">
+                      <div
+                        key={option.id}
+                        className="flex items-center space-x-2"
+                      >
                         <Checkbox
                           id={option.id}
                           checked={selectedFilters.includes(option.id)}
@@ -265,7 +295,12 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                         max="50"
                         step="1"
                         value={priceRange[1]}
-                        onChange={(e) => setPriceRange([priceRange[0], Number.parseInt(e.target.value)])}
+                        onChange={(e) =>
+                          setPriceRange([
+                            priceRange[0],
+                            Number.parseInt(e.target.value),
+                          ])
+                        }
                         className="w-full"
                       />
                     </div>
@@ -277,8 +312,8 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                     variant="outline"
                     size="sm"
                     onClick={() => {
-                      setSelectedFilters([])
-                      setPriceRange([0, 50])
+                      setSelectedFilters([]);
+                      setPriceRange([0, 50]);
                     }}
                   >
                     Reset
@@ -290,38 +325,50 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
               </div>
             </PopoverContent>
           </Popover>
-          <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}>
-            {viewMode === "grid" ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+          >
+            {viewMode === "grid" ? (
+              <List className="h-4 w-4" />
+            ) : (
+              <Grid className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
 
-      <div className="flex-1 flex">
+      <div className="flex flex-1">
         <Tabs
           orientation="vertical"
           defaultValue={selectedCategory}
           value={selectedCategory}
           onValueChange={handleCategoryChange}
-          className="flex-1 flex items-start gap-4"
+          className="flex flex-1 items-start gap-4"
         >
-          <TabsList className="shrink-0 grid grid-cols-1 min-w-28 p-0 bg-background h-auto">
-            {categoryTabs.map((tab) => (
+          <TabsList className="grid h-auto min-w-28 shrink-0 grid-cols-1 bg-background p-0">
+            {categoryTabs.map((tab: any) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="border-l-2 border-transparent justify-start rounded-none data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:bg-primary/10 py-1.5 rounded"
+                className="justify-start rounded border-l-2 border-transparent py-1.5 data-[state=active]:border-primary data-[state=active]:bg-muted data-[state=active]:shadow-none"
               >
-                <tab.icon className="h-5 w-5 me-2" /> {tab.name}
+                <tab.icon className="me-2 h-5 w-5" /> {tab.name}
               </TabsTrigger>
             ))}
           </TabsList>
 
           <div className="flex-1 overflow-hidden">
             {categoryTabs.map((tab) => (
-              <TabsContent key={tab.value} value={tab.value} className="mt-0 h-full">
+              <TabsContent
+                key={tab.value}
+                value={tab.value}
+                className="mt-0 h-full"
+              >
                 <ScrollArea className="h-[calc(100vh-12rem)]">
                   {tab.value === "favorites" ? (
-                    <div className="text-center py-8 text-muted-foreground">
+                    <div className="py-8 text-center text-muted-foreground">
                       <p>Your favorite items will appear here</p>
                       <Button variant="outline" className="mt-2">
                         Add Favorites
@@ -337,18 +384,26 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                             fill
                             className="object-cover"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                          <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent">
                             <div className="p-4 text-white">
-                              <Badge className="bg-red-500 mb-2">Today's Special</Badge>
-                              <h3 className="text-xl font-bold">Chef's Special Pasta</h3>
-                              <p className="text-sm opacity-90">Fresh pasta with seasonal ingredients</p>
+                              <Badge className="mb-2 bg-red-500">
+                                Today&apos;s Special
+                              </Badge>
+                              <h3 className="text-xl font-bold">
+                                Chef&apos;s Special Pasta
+                              </h3>
+                              <p className="text-sm opacity-90">
+                                Fresh pasta with seasonal ingredients
+                              </p>
                             </div>
                           </div>
                         </div>
                         <CardContent className="p-4">
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-muted-foreground">Limited availability</p>
+                              <p className="text-sm text-muted-foreground">
+                                Limited availability
+                              </p>
                               <p className="font-medium">$18.99</p>
                             </div>
                             <Button
@@ -358,7 +413,8 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                                   name: "Chef's Special Pasta",
                                   price: 18.99,
                                   category: "specials",
-                                  description: "Fresh pasta with seasonal ingredients",
+                                  description:
+                                    "Fresh pasta with seasonal ingredients",
                                   image: "https://placehold.co/200x600",
                                 })
                               }
@@ -369,13 +425,15 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                         </CardContent>
                       </Card>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <Card>
                           <CardContent className="p-4">
                             <Badge className="mb-2">Weekend Special</Badge>
                             <h3 className="font-medium">Surf & Turf</h3>
-                            <p className="text-sm text-muted-foreground">Steak and lobster with sides</p>
-                            <div className="flex justify-between items-center mt-4">
+                            <p className="text-sm text-muted-foreground">
+                              Steak and lobster with sides
+                            </p>
+                            <div className="mt-4 flex items-center justify-between">
                               <p className="font-medium">$29.99</p>
                               <Button
                                 variant="outline"
@@ -401,8 +459,10 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                           <CardContent className="p-4">
                             <Badge className="mb-2">Seasonal</Badge>
                             <h3 className="font-medium">Pumpkin Spice Latte</h3>
-                            <p className="text-sm text-muted-foreground">Limited time seasonal beverage</p>
-                            <div className="flex justify-between items-center mt-4">
+                            <p className="text-sm text-muted-foreground">
+                              Limited time seasonal beverage
+                            </p>
+                            <div className="mt-4 flex items-center justify-between">
                               <p className="font-medium">$5.99</p>
                               <Button
                                 variant="outline"
@@ -413,7 +473,8 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                                     name: "Pumpkin Spice Latte",
                                     price: 5.99,
                                     category: "beverages",
-                                    description: "Limited time seasonal beverage",
+                                    description:
+                                      "Limited time seasonal beverage",
                                     image: "/placeholder.svg",
                                   })
                                 }
@@ -426,14 +487,17 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                       </div>
                     </div>
                   ) : filteredItems.length === 0 ? (
-                    <div className="text-center py-8 text-muted-foreground">
+                    <div className="py-8 text-center text-muted-foreground">
                       <p>No items found</p>
                       <p className="text-sm">Try adjusting your filters</p>
                     </div>
                   ) : viewMode === "grid" ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pr-4">
+                    <div className="grid grid-cols-1 gap-4 pr-4 sm:grid-cols-2 lg:grid-cols-3">
                       {filteredItems.map((item) => (
-                        <Card key={item.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                        <Card
+                          key={item.id}
+                          className="overflow-hidden transition-shadow hover:shadow-md"
+                        >
                           <div className="relative h-32 w-full">
                             <Image
                               src={item.image || "https://placehold.co/100x100"}
@@ -443,17 +507,22 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                             />
                           </div>
                           <CardContent className="p-4">
-                            <div className="flex justify-between items-start">
+                            <div className="flex items-start justify-between">
                               <div>
                                 <h3 className="font-medium">{item.name}</h3>
-                                <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>
+                                <p className="line-clamp-2 text-sm text-muted-foreground">
+                                  {item.description}
+                                </p>
                               </div>
                               <Badge>${item.price.toFixed(2)}</Badge>
                             </div>
                           </CardContent>
                           <CardFooter className="p-4 pt-0">
-                            <Button className="w-full" onClick={() => onAddToCart(item)}>
-                              <Plus className="h-4 w-4 mr-2" />
+                            <Button
+                              className="w-full"
+                              onClick={() => onAddToCart(item)}
+                            >
+                              <Plus className="mr-2 h-4 w-4" />
                               Add to Order
                             </Button>
                           </CardFooter>
@@ -463,7 +532,10 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                   ) : (
                     <div className="space-y-2 pr-4">
                       {filteredItems.map((item) => (
-                        <div key={item.id} className="flex items-center border rounded-md p-3 hover:bg-muted/50">
+                        <div
+                          key={item.id}
+                          className="flex items-center rounded-md border p-3 hover:bg-muted/50"
+                        >
                           <div className="relative h-16 w-16 overflow-hidden rounded-md">
                             <Image
                               src={item.image || "https://placehold.co/100x100"}
@@ -477,9 +549,16 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
                               <h3 className="font-medium">{item.name}</h3>
                               <Badge>${item.price.toFixed(2)}</Badge>
                             </div>
-                            <p className="text-sm text-muted-foreground line-clamp-1">{item.description}</p>
+                            <p className="line-clamp-1 text-sm text-muted-foreground">
+                              {item.description}
+                            </p>
                           </div>
-                          <Button variant="ghost" size="icon" className="ml-2" onClick={() => onAddToCart(item)}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="ml-2"
+                            onClick={() => onAddToCart(item)}
+                          >
                             <Plus className="h-4 w-4" />
                           </Button>
                         </div>
@@ -493,5 +572,5 @@ export default function MenuSelection({ onAddToCart }: MenuSectionProps) {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
