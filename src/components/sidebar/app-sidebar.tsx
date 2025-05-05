@@ -87,6 +87,18 @@ const data = {
         },
       ],
     },
+    {
+      title: "Inventory",
+      url: "#",
+      icon: ChefHat,
+      isActive: true,
+      items: [
+        {
+          title: "Manage",
+          url: "/admin/inventory/",
+        },
+      ],
+    },
   ],
 };
 
