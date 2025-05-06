@@ -4,15 +4,19 @@ import DataTable from "./data-table";
 import { columns, Inventory } from "./columns";
 
 const data:Inventory[] = [
-    {
-    ingredient: 'Milk',
-    category: "Dairy",
-    currentQuantity: 5,
+  {
+    id: "1",
+    ingredient: {
+      id: "1",
+      name: "Flour",
+      unit: "kg",
+      category: "Baking",
+    },
+    quantity: 25,
+    lastUpdated: ("2023-05-01"),
     minimumRequired: 10,
-    status: true,
-    lastUpdated:"6/5/2003",
-    actions: 'Edit',
-    }
+    lowStock: false,
+  },
 ]
     
 

@@ -1,45 +1,46 @@
+import SheetInventory from "@/components/sheet-inventory";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import{ Pencil } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 
 
 export type Inventory = {
-    ingredient: string;
-    category: string;
-    currentQuantity: number;
+    id: string;
+    ingredient: {
+        id: string,
+        name: string,
+        unit: string,
+        category: string,
+    };
+    quantity: number;
     minimumRequired: number;
-    status: boolean;
+    lowStock: boolean;
     lastUpdated: string;
-    actions: string;
 };
 
 export const columns: ColumnDef<Inventory>[] = [
     {
         accessorKey: "ingredient",
         header: "Ingredient",
-        cell: ({ row }) => <div className="capitalize">{row.getValue("ingredient")}</div>,
-    },
-    
-    {
-        accessorKey: "category",
-        header: () => {
-            return (<div>Category</div>);
-        },
-        cell: ({ row }) => (
-            <div className="text-start">{row.getValue("category")}</div>
-        ),
+        cell: ({ row }) => <div className="capitalize">{row.original.ingredient.name}</div>,
     },
 
     {
-        accessorKey: "currentQuantity",
+        accessorKey: "ingredient",
+        header: "Category",
+        cell: ({ row }) => <div className="text-start">{row.original.ingredient.category}</div>
+    },
+
+    {
+        accessorKey: "quantity",
         header: () => {
             return (
                 <div>Current Quantity</div>
             );
         },
         cell: ({ row }) => (
-            <div className="text-start">{row.getValue("currentQuantity")}</div>
+            <div className="text-start">{row.getValue("quantity")}</div>
         ),
     },
 
@@ -56,14 +57,14 @@ export const columns: ColumnDef<Inventory>[] = [
     },
 
     {
-        accessorKey: "status",
+        accessorKey: "lowStock",
         header: "Status",
         cell: ({ row }) => (
-          <div className="text-start">
-            {row.getValue("Status") ? "In Stock" : "Low Stock"}
-          </div>
+            <div className="text-start">
+                {row.getValue("lowStock") ? "In Stock" : "Low Stock"}
+            </div>
         ),
-      },
+    },
 
     {
         accessorKey: "lastUpdated",
@@ -73,10 +74,21 @@ export const columns: ColumnDef<Inventory>[] = [
     {
         accessorKey: "actions",
         header: "Actions",
-        cell: () => (
-            <Button>
-            <Pencil />
-            </Button>
-        ),
+        cell: ({ row }) => {
+            return (
+                <div className="capitalize">
+                    <SheetInventory
+                        inventoryId={row.getValue("id")}
+                        initialData={row.original}
+                        mode="edit"
+                    />
+                    <Button variant="ghost">
+                        <Trash2 className="text-red-600" />
+                    </Button>
+                </div>
+            )
+        }
+
     },
 ];
+

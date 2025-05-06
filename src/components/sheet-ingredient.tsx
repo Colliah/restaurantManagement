@@ -69,7 +69,7 @@ const SheetIngredient = ({
 }: SheetIngredientProps) => {
   const [open, setOpen] = useState(false);
   const mutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: z.infer<typeof formSchema>) => {
       if (mode === "create") {
         return ingredientsApi.createIngredient(data);
       }
