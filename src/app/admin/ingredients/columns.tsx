@@ -1,18 +1,24 @@
+import { queryClient } from "@/components/providers/providers";
+import SheetIngredient, { Unit } from "@/components/sheet-ingredient";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ingredientsApi } from "@/services/ingredients";
+import { useMutation } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 export type Ingredient = {
   id: string;
   name: string;
-  unit: number;
-  currentStock: number;
-  minimumStock: number;
-  supplierInfo: string;
-  costPerUnit: number;
-  createdAt: Date;
-  updatedAt: Date;
+  unit: Unit;
+  category: string;
+  // invetory:[
+  //   {
+  //    id:string,
+  //    quantity:number,
+  //   }
+  // ]
 };
 
 export const columns: ColumnDef<Ingredient>[] = [
@@ -49,69 +55,52 @@ export const columns: ColumnDef<Ingredient>[] = [
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
-    accessorKey: "currentStock",
-    header: ({ column }) => {
+    accessorKey: "category",
+    header: "Category",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("category")}</div>
+    ),
+  },
+  {
+    accessorKey: "unit",
+    header: "Unit",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("unit")}</div>,
+  },
+  {
+    header: "Action",
+    cell: ({ row }) => {
+      const mutationDelete = useMutation({
+        mutationFn: () => ingredientsApi.deleteIngredient(row.getValue("id")),
+        onSuccess: () => {
+          toast.success("Ingredient deleted");
+          queryClient.invalidateQueries({ queryKey: ["ingredients"] });
+        },
+        onError: (error) => {
+          console.log(error), toast.error("Ingredient not deleted");
+        },
+      });
+
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Current Stock
-          <ArrowUpDown />
-        </Button>
+        <div className="capitalize">
+          <SheetIngredient
+            mode="edit"
+            ingredientId={row.original.id}
+            initialData={row.original}
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => mutationDelete.mutate()}
+            disabled={mutationDelete.isPending}
+          >
+            {mutationDelete.isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <Trash2 className="text-red-600" />
+            )}
+          </Button>
+        </div>
       );
     },
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue("currentStock")}</div>
-    ),
   },
-  {
-    accessorKey: "minimumStock",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Minimum Stock
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue("minimumStock")}</div>
-    ),
-  },
-  {
-    accessorKey: "supplierInfo",
-    header: "Supplier Info",
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue("supplierInfo")}</div>
-    ),
-  },
-  {
-    accessorKey: "costPerUnit",
-    header: "Cost Per Unit ",
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue("costPerUnit")}</div>
-    ),
-  },
-  // {
-  //   accessorKey: "createdAt",
-  //   header: "Created At",
-  //   cell: ({ row }) => {
-  //     const date: Date = row.getValue("createdAt");
-  //     const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
-  //     return <div>{formattedDate}</div>;
-  //   },
-  // },
-  // {
-  //   accessorKey: "updatedAt",
-  //   header: "Updated At",
-  //   cell: ({ row }) => {
-  //     const date: Date = row.getValue("updatedAt");
-  //     const formattedDate = new Date(date).toLocaleString(); // hoặc format bằng date-fns
-  //     return <div>{formattedDate}</div>;
-  //   },
-  // },
 ];
