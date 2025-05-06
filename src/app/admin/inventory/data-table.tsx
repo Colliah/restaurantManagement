@@ -29,7 +29,7 @@ import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import React from "react";
 
-import SheetIngredient from "@/components/sheet-ingredient";
+import SheetInventory from "@/components/sheet-inventory";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -103,7 +103,7 @@ const DataTable = <TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <SheetIngredient />
+        <SheetInventory />
       </div>
       <div className="rounded-md border">
         <Table>

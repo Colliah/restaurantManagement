@@ -74,7 +74,7 @@ export const columns: ColumnDef<Inventory>[] = [
         accessorKey: "actions",
         header: "Actions",
         cell: () => (
-            <Button >
+            <Button>
             <Pencil />
             </Button>
         ),
