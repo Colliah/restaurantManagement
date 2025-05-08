@@ -1,9 +1,7 @@
 "use client";
-import React from "react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -11,7 +9,7 @@ import {
 } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Form, FormDescription } from "./ui/form";
+import { Form } from "./ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,20 +27,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ingredientsApi } from "@/services/ingredients";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { queryClient } from "./providers/providers";
+import { useState } from "react";
+import { Edit, Loader2 } from "lucide-react";
+import { Ingredient } from "@/app/admin/ingredients/columns";
 
 export enum Unit {
   GRAM = "g",
   KILOGRAM = "kg",
   LITER = "l",
   MILLILITER = "ml",
-  PEICES = "pieces",
+  PIECES = "pieces",
 }
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  unit: z.nativeEnum(Unit),
+  unit: z.nativeEnum(Unit).optional(),
   category: z
     .string()
     .min(2, {
@@ -51,23 +56,70 @@ const formSchema = z.object({
     .optional(),
 });
 
-const SheetIngredient = () => {
+interface SheetIngredientProps {
+  ingredientId?: string;
+  initialData?: Ingredient;
+  mode?: "create" | "edit";
+}
+
+const SheetIngredient = ({
+  mode,
+  ingredientId,
+  initialData,
+}: SheetIngredientProps) => {
+  const [open, setOpen] = useState(false);
+  const mutation = useMutation({
+    mutationFn: async (data: any) => {
+      if (mode === "create") {
+        return ingredientsApi.createIngredient(data);
+      }
+      return ingredientsApi.updateIngredient(ingredientId!, data);
+    },
+    onSuccess: () => {
+      toast.success(
+        mode === "create" ? "Ingredient created" : "Ingredient updated",
+      );
+      form.reset();
+      queryClient.invalidateQueries({ queryKey: ["ingredients"] });
+    },
+    onSettled: () => {
+      setOpen(false);
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Something went wrong");
+    },
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      unit: undefined,
-      category: "",
-    },
+    defaultValues:
+      mode === "create"
+        ? {
+            name: "",
+            unit: undefined,
+            category: "",
+          }
+        : {
+            name: initialData?.name || "",
+            unit: initialData?.unit || undefined,
+            category: initialData?.category || "",
+          },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    mutation.mutate(values);
   }
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild className="ml-4">
-        <Button>Create</Button>
+        {mode === "create" ? (
+          <Button>Create</Button>
+        ) : (
+          <Button variant="ghost" size="icon">
+            <Edit />
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="mb-8">
@@ -109,9 +161,10 @@ const SheetIngredient = () => {
                     </FormControl>
                     <SelectContent>
                       {Object.values(Unit).map((v) => (
-                        <SelectItem value={v}>{v}</SelectItem>
+                        <SelectItem key={v} value={v}>
+                          {v}
+                        </SelectItem>
                       ))}
-                      {/* Fooditem.id || .name */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -132,7 +185,15 @@ const SheetIngredient = () => {
               )}
             />
             <SheetFooter>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" disabled={mutation.isPending}>
+                {mutation.isPending ? (
+                  <>
+                    <Loader2 className="animate-spin" /> Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
             </SheetFooter>
           </form>
         </Form>

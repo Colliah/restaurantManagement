@@ -65,7 +65,7 @@ export const FileUploader = forwardRef<
       value,
       onValueChange,
       reSelect,
-      orientation = "vertical",
+      orientation = "horizontal",
       children,
       dir,
       ...props
@@ -265,8 +265,10 @@ export const FileUploaderContent = forwardRef<
         {...props}
         ref={ref}
         className={cn(
-          "flex rounded-xl gap-1",
-          orientation === "horizontal" ? "flex-raw flex-wrap" : "flex-col",
+          "flex rounded-xl gap-4",
+          orientation === "horizontal"
+            ? "flex-row flex-nowrap overflow-x-auto"
+            : "flex-col",
           className,
         )}
       >
@@ -289,13 +291,13 @@ export const FileUploaderItem = forwardRef<
       ref={ref}
       className={cn(
         buttonVariants({ variant: "ghost" }),
-        "h-6 p-1 justify-between cursor-pointer relative",
+        "h-22 p-1 justify-between cursor-pointer relative ",
         className,
         isSelected ? "bg-muted" : "",
       )}
       {...props}
     >
-      <div className="font-medium leading-none tracking-tight flex items-center gap-1.5 h-full w-full">
+      <div className="font-medium leading-none tracking-tight flex items-center gap-1.5 h-full w-full ">
         {children}
       </div>
       <button
@@ -307,7 +309,7 @@ export const FileUploaderItem = forwardRef<
         onClick={() => removeFileFromSet(index)}
       >
         <span className="sr-only">remove item {index}</span>
-        <RemoveIcon className="w-4 h-4 hover:stroke-destructive duration-200 ease-in-out" />
+        {/* <RemoveIcon className="w-4 h-4 hover:stroke-destructive duration-200 ease-in-out" /> */}
       </button>
     </div>
   );
