@@ -11,7 +11,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="bg-muted">
         <Providers>{children}</Providers>
         <Toaster />
       </body>
