@@ -13,13 +13,13 @@ export default function PosSystem() {
 
   return (
     <div className="flex h-screen max-h-screen flex-col overflow-hidden">
-      <Header />
+      <Header isPOS={true} />
       <div className="h-full w-full">
         <div className="flex h-full flex-1 flex-col">
           <div className="grid h-full grid-cols-3 gap-4 p-4">
             <div className="col-span-2 overflow-auto rounded-xl border bg-white shadow">
               <Tabs
-                className="mt-4 mx-4"
+                className="mx-4 mt-4"
                 value={activeTab}
                 onValueChange={setActiveTab}
               >
@@ -34,7 +34,7 @@ export default function PosSystem() {
                   />
                 </TabsContent>
                 <TabsContent value="menu">
-                  <MenuSelection onAddToCart={() => void (0)} />
+                  <MenuSelection onAddToCart={() => void 0} />
                 </TabsContent>
               </Tabs>
             </div>

@@ -2,6 +2,7 @@
 import React from "react";
 import DataTable from "./data-table";
 import { columns, Food } from "./columns";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 const data: Food[] = [
   {
     name: "Ice cream",
@@ -15,7 +16,14 @@ const data: Food[] = [
 const FoodPage = () => {
   return (
     <div>
-      <DataTable columns={columns} data={data} />
+      <Card>
+        <CardHeader>
+          <CardTitle>Ingredients</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <DataTable columns={columns} data={data || []} />
+        </CardContent>
+      </Card>
     </div>
   );
 };
