@@ -7,10 +7,15 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { AppSidebar } from "../sidebar/app-sidebar";
-import { SidebarProvider } from "../ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import PosSettings from "./pos-settings";
+import { ClerkLoading, SignedIn, UserButton } from "@clerk/nextjs";
 
-const Header = () => {
+interface HeaderProps {
+  isPOS?: boolean;
+}
+
+const Header = ({ isPOS = false }: HeaderProps) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const toggleFullScreen = () => {
@@ -30,25 +35,29 @@ const Header = () => {
   };
 
   return (
-    <header className="border-b bg-background z-10 flex-shrink-0">
+    <div className="z-10 flex-shrink-0 border-b bg-background">
       <div className="flex h-16 items-center px-4 md:px-6">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button size="icon" variant="ghost">
-              <AlignStartVertical />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-[16rem]">
-            <SidebarProvider>
-              <AppSidebar variant="inset" collapsible="none" />
-            </SidebarProvider>
-          </SheetContent>
-        </Sheet>
+        {isPOS ? (
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button size="icon" variant="ghost">
+                <AlignStartVertical />
+              </Button>
+            </SheetTrigger>
+            <SheetContent buttonClose={false} side="left" className="w-[16rem]">
+              <SidebarProvider>
+                <AppSidebar variant="inset" collapsible="none" />
+              </SidebarProvider>
+            </SheetContent>
+          </Sheet>
+        ) : (
+          <SidebarTrigger />
+        )}
         <h1 className="ml-2 text-xl font-semibold">POS</h1>
 
         <div className="ml-auto flex items-center gap-2">
           <div className="relative flex items-center">
-            <Search className="size-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="w-[200px] pl-8 md:w-[300px]"
               placeholder="Search"
@@ -68,9 +77,17 @@ const Header = () => {
           </Button>
 
           <PosSettings />
+
+          <ClerkLoading>
+            <div className="size-8 animate-pulse rounded-full bg-muted"></div>
+          </ClerkLoading>
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 
