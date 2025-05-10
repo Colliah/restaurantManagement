@@ -1,5 +1,6 @@
+import Header from "@/components/pos/header";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -7,7 +8,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full">
-        <SidebarTrigger />
+        <Header />
         <div className="p-2">{children}</div>
       </main>
     </SidebarProvider>
