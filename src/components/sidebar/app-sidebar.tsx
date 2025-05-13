@@ -6,6 +6,10 @@ import {
   NotebookTabs,
   CookingPot,
   ChefHat,
+  ClipboardList,
+  DollarSign,
+  CalendarDays,
+  Armchair,
 } from "lucide-react";
 
 import { NavMain } from "@/components/sidebar/nav-main";
@@ -44,38 +48,102 @@ const data = {
   ],
   navMain: [
     {
-      title: "Recipes",
-      url: "/admin/recipes",
-      icon: NotebookTabs,
-      isActive: true,
-      items: [
+      label: "Menu Management",
+      children: [
         {
-          title: "Manage",
+          title: "Ingredients",
+          url: "#",
+          icon: CookingPot,
+          isActive: true,
+          items: [
+            {
+              title: "Manage",
+              url: "/admin/ingredients/",
+            },
+          ],
+        },
+        {
+          title: "Recipes",
           url: "/admin/recipes",
+          icon: NotebookTabs,
+          isActive: false,
+          items: [
+            {
+              title: "Manage",
+              url: "/admin/recipes",
+            },
+          ],
+        },
+
+        {
+          title: "Food",
+          url: "#",
+          icon: ChefHat,
+          isActive: false,
+          items: [
+            {
+              title: "Manage",
+              url: "/admin/food/",
+            },
+          ],
         },
       ],
     },
     {
-      title: "Ingredients",
-      url: "#",
-      icon: CookingPot,
-      isActive: true,
-      items: [
+      label: "Order Management",
+      children: [
         {
-          title: "Manage",
-          url: "/admin/ingredients/",
+          title: "Orders",
+          url: "#",
+          icon: ClipboardList,
+          isActive: false,
+          items: [
+            {
+              title: "Manage orders",
+              url: "/admin/orders/",
+            },
+          ],
+        },
+        {
+          title: "Payments",
+          url: "#",
+          icon: DollarSign,
+          isActive: false,
+          items: [
+            {
+              title: "Manage",
+              url: "/admin/payments/",
+            },
+          ],
         },
       ],
     },
     {
-      title: "Food",
-      url: "#",
-      icon: ChefHat,
-      isActive: true,
-      items: [
+      label: "Reservation Management",
+      children: [
         {
-          title: "Manage",
-          url: "/admin/food/",
+          title: "Reservations",
+          url: "#",
+          icon: CalendarDays,
+          isActive: false,
+          items: [
+            {
+              title: "Manage reservations",
+              url: "/admin/reservations/",
+            },
+          ],
+        },
+        {
+          title: "Tables",
+          url: "#",
+          icon: Armchair,
+          isActive: false,
+          items: [
+            {
+              title: "Manage tables",
+              url: "/admin/tables/",
+            },
+          ],
         },
       ],
     },
@@ -88,7 +156,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="hide-scrollbar">
         <NavMain items={data.navMain} />
       </SidebarContent>
       {/* <SidebarFooter>

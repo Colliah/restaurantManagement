@@ -249,7 +249,7 @@ export default function PosReservation() {
                   <div className="grid grid-cols-4 items-center gap-4">
                     <FormLabel>Email</FormLabel>
                     <FormControl className="col-span-3">
-                      <Textarea {...field}/>
+                      <Textarea {...field} />
                     </FormControl>
                   </div>
                   <FormMessage />

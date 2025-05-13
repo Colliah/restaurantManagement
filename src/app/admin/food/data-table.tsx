@@ -31,6 +31,7 @@ import React from "react";
 import { SheetTrigger } from "@/components/ui/sheet";
 import SheetIngredient from "@/components/sheet-ingredient";
 import SheetFood from "@/components/sheet-food";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -76,7 +77,7 @@ const DataTable = <TData, TValue>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm bg-card"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -106,8 +107,8 @@ const DataTable = <TData, TValue>({
         </DropdownMenu>
         <SheetFood />
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border overflow-hidden">
+        <Table className="bg-card">
           {/* Top */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

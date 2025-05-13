@@ -35,7 +35,7 @@ const Header = ({ isPOS = false }: HeaderProps) => {
   };
 
   return (
-    <div className="z-10 flex-shrink-0 border-b bg-background">
+    <div className="z-10 flex-shrink-0 border-b bg-card">
       <div className="flex h-16 items-center px-4 md:px-6">
         {isPOS ? (
           <Sheet>
@@ -46,7 +46,7 @@ const Header = ({ isPOS = false }: HeaderProps) => {
             </SheetTrigger>
             <SheetContent buttonClose={false} side="left" className="w-[16rem]">
               <SidebarProvider>
-                <AppSidebar variant="inset" collapsible="none" />
+                <AppSidebar className="bg-card" variant="inset" collapsible="none" />
               </SidebarProvider>
             </SheetContent>
           </Sheet>

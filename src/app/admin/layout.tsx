@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar className="bg-card" />
       <main className="w-full">
         <Header />
         <div className="p-2">{children}</div>

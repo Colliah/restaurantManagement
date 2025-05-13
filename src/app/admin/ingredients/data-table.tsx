@@ -76,7 +76,7 @@ const DataTable = <TData, TValue>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm bg-card"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -106,8 +106,8 @@ const DataTable = <TData, TValue>({
         </DropdownMenu>
         <SheetIngredient mode="create" />
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border overflow-hidden">
+        <Table className="bg-card">
           {/* Top */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -118,9 +118,9 @@ const DataTable = <TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     </TableHead>
                   );
                 })}
