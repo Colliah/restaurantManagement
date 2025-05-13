@@ -34,6 +34,8 @@ import { queryClient } from "./providers/providers";
 import { useState } from "react";
 import { Edit, Loader2 } from "lucide-react";
 import { Ingredient } from "@/app/admin/ingredients/columns";
+import { IngredientCategory } from "@/enums/ingredient-category.enum";
+import { Textarea } from "./ui/textarea";
 
 export enum Unit {
   GRAM = "g",
@@ -50,9 +52,18 @@ const formSchema = z.object({
   unit: z.nativeEnum(Unit).optional(),
   category: z
     .string()
-    .min(2, {
-      message: "Category must be at least 2 characters.",
-    })
+    .min(1, {
+      message: "Category is required.",
+    }),
+  description: z
+    .string()
+    .optional(),
+  averageCost: z.coerce.number().optional(),
+  allergenInfo: z
+    .string()
+    .optional(),
+  nutritionalInfo: z
+    .string()
     .optional(),
 });
 
@@ -95,15 +106,23 @@ const SheetIngredient = ({
     defaultValues:
       mode === "create"
         ? {
-            name: "",
-            unit: undefined,
-            category: "",
-          }
+          name: "",
+          unit: undefined,
+          category: "",
+          description: "",
+          averageCost: 0,
+          allergenInfo: "",
+          nutritionalInfo: ""
+        }
         : {
-            name: initialData?.name || "",
-            unit: initialData?.unit || undefined,
-            category: initialData?.category || "",
-          },
+          name: initialData?.name || "",
+          unit: initialData?.unit || undefined,
+          category: initialData?.category || "",
+          description: initialData?.description || "",
+          averageCost: initialData?.averageCost || 0,
+          allergenInfo: initialData?.allergenInfo || "",
+          nutritionalInfo: initialData?.nutritionalInfo || "",
+        },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -121,7 +140,7 @@ const SheetIngredient = ({
           </Button>
         )}
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="!w-[50%]">
         <SheetHeader className="mb-8">
           <SheetTitle>Ingredients</SheetTitle>
         </SheetHeader>
@@ -142,48 +161,133 @@ const SheetIngredient = ({
                 </FormItem>
               )}
             />
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="unit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Unit <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(Unit).map((v) => (
+                          <SelectItem key={v} value={v}>
+                            {v}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Category <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(IngredientCategory).map((v) => (
+                          <SelectItem className="capitalize" key={v} value={v}>
+                            {v}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+
             <FormField
               control={form.control}
-              name="unit"
+              name="averageCost"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Unit <span className="text-red-500">*</span>
+                    Average Cost
                   </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.values(Unit).map((v) => (
-                        <SelectItem key={v} value={v}>
-                          {v}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input placeholder="" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="allergenInfo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Allergen Info
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="nutritionalInfo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Nutritional Info
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Description
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="" rows={3} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <SheetFooter>
               <Button type="submit" disabled={mutation.isPending}>
                 {mutation.isPending ? (

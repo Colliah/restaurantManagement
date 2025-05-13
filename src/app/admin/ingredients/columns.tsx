@@ -2,6 +2,7 @@ import { queryClient } from "@/components/providers/providers";
 import SheetIngredient, { Unit } from "@/components/sheet-ingredient";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { IngredientCategory } from "@/enums/ingredient-category.enum";
 import { ingredientsApi } from "@/services/ingredients";
 import { useMutation } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
@@ -12,13 +13,11 @@ export type Ingredient = {
   id: string;
   name: string;
   unit: Unit;
-  category: string;
-  // invetory:[
-  //   {
-  //    id:string,
-  //    quantity:number,
-  //   }
-  // ]
+  category: IngredientCategory;
+  description: string;
+  averageCost: number;
+  allergenInfo: string;
+  nutritionalInfo: string;
 };
 
 export const columns: ColumnDef<Ingredient>[] = [
@@ -65,6 +64,13 @@ export const columns: ColumnDef<Ingredient>[] = [
     accessorKey: "unit",
     header: "Unit",
     cell: ({ row }) => <div className="capitalize">{row.getValue("unit")}</div>,
+  },
+  {
+    accessorKey: "averageCost",
+    header: "Average Cost",
+    cell: ({ row }) => (
+      <div>{row.getValue("averageCost")}</div>
+    ),
   },
   {
     header: "Action",

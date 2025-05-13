@@ -76,7 +76,7 @@ const DataTable = <TData, TValue>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm bg-card"
+          className="max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -106,8 +106,8 @@ const DataTable = <TData, TValue>({
         </DropdownMenu>
         <SheetIngredient mode="create" />
       </div>
-      <div className="rounded-md border overflow-hidden">
-        <Table className="bg-card">
+      <div className="rounded-md border">
+        <Table>
           {/* Top */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

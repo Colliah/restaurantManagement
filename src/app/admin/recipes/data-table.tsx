@@ -103,8 +103,8 @@ const DataTable = <TData, TValue>({
         </DropdownMenu>
         <SheetRecipes />
       </div>
-      <div className="rounded-md border overflow-hidden">
-        <Table className="bg-card">
+      <div className="rounded-md border">
+        <Table>
           {/* Top */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
