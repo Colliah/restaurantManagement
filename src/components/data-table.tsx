@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -14,7 +16,6 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import {
-  ColumnDef,
   SortingState,
   ColumnFiltersState,
   VisibilityState,
@@ -24,19 +25,26 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   flexRender,
+  ColumnDef,
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import React from "react";
-import SheetRecipes from "@/components/sheet-recipes";
+import React, { ElementType } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading?: boolean;
+  searchKey?: string;
+  AddComponent?: ElementType | React.ComponentType;
 }
+
 const DataTable = <TData, TValue>({
   columns,
   data,
+  isLoading = false,
+  searchKey = "name",
+  AddComponent,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -68,16 +76,16 @@ const DataTable = <TData, TValue>({
     <div className="container mx-auto w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter recipes..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder={`Filter ${searchKey}`}
+          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }
-          className="max-w-sm bg-card"
+          className="max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="ml-auto mr-4">
               Filter <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -101,10 +109,11 @@ const DataTable = <TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <SheetRecipes />
+
+        {AddComponent && <AddComponent />}
       </div>
-      <div className="rounded-md border overflow-hidden">
-        <Table className="bg-card">
+      <div className="rounded-md border">
+        <Table>
           {/* Top */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -115,9 +124,9 @@ const DataTable = <TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}
@@ -125,7 +134,17 @@ const DataTable = <TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={index}>
+                  {columns.map((_, cellIndex) => (
+                    <TableCell key={cellIndex}>
+                      <div className="h-6 w-full animate-pulse rounded-md bg-muted"></div>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

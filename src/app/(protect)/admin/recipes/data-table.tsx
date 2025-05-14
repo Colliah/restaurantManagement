@@ -14,6 +14,7 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import {
+  ColumnDef,
   SortingState,
   ColumnFiltersState,
   VisibilityState,
@@ -23,21 +24,16 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   flexRender,
-  ColumnDef,
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { SheetTrigger } from "@/components/ui/sheet";
-import SheetIngredient from "@/components/sheet-ingredient";
-import SheetFood from "@/components/sheet-food";
-import { cn } from "@/lib/utils";
+import SheetRecipes from "@/components/sheet-recipes";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
-
 const DataTable = <TData, TValue>({
   columns,
   data,
@@ -72,7 +68,7 @@ const DataTable = <TData, TValue>({
     <div className="container mx-auto w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter food..."
+          placeholder="Filter recipes..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -105,10 +101,10 @@ const DataTable = <TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <SheetFood />
+        <SheetRecipes />
       </div>
-      <div className="rounded-md border overflow-hidden">
-        <Table className="bg-card">
+      <div className="rounded-md border">
+        <Table>
           {/* Top */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

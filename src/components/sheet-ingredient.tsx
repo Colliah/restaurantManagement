@@ -2,6 +2,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -33,7 +34,9 @@ import { toast } from "sonner";
 import { queryClient } from "./providers/providers";
 import { useState } from "react";
 import { Edit, Loader2 } from "lucide-react";
-import { Ingredient } from "@/app/admin/ingredients/columns";
+import { Ingredient } from "@/app/(protect)/admin/ingredients/columns";
+import { IngredientCategory } from "@/enums/ingredient-category.enum";
+import { Textarea } from "./ui/textarea";
 
 export enum Unit {
   GRAM = "g",
@@ -47,13 +50,16 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  unit: z.nativeEnum(Unit).optional(),
-  category: z
-    .string()
-    .min(2, {
-      message: "Category must be at least 2 characters.",
-    })
-    .optional(),
+  unit: z.nativeEnum(Unit),
+  category: z.string().min(1, {
+    message: "Category is required.",
+  }),
+  description: z.string().optional(),
+  averageCost: z.string().min(1, {
+    message: "Average cost is required.",
+  }),
+  allergenInfo: z.string().optional(),
+  nutritionalInfo: z.string().optional(),
 });
 
 interface SheetIngredientProps {
@@ -98,11 +104,19 @@ const SheetIngredient = ({
             name: "",
             unit: undefined,
             category: "",
+            description: "",
+            averageCost: "",
+            allergenInfo: "",
+            nutritionalInfo: "",
           }
         : {
             name: initialData?.name || "",
             unit: initialData?.unit || undefined,
             category: initialData?.category || "",
+            description: initialData?.description || "",
+            averageCost: initialData?.averageCost || "",
+            allergenInfo: initialData?.allergenInfo || "",
+            nutritionalInfo: initialData?.nutritionalInfo || "",
           },
   });
 
@@ -112,7 +126,7 @@ const SheetIngredient = ({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild className="ml-4">
+      <SheetTrigger asChild>
         {mode === "create" ? (
           <Button>Create</Button>
         ) : (
@@ -121,9 +135,12 @@ const SheetIngredient = ({
           </Button>
         )}
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="!w-[50%]">
         <SheetHeader className="mb-8">
           <SheetTitle>Ingredients</SheetTitle>
+          <SheetDescription>
+            {mode === "create" ? "Create new ingredient" : "Edit ingredient"}
+          </SheetDescription>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -142,48 +159,124 @@ const SheetIngredient = ({
                 </FormItem>
               )}
             />
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="unit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Unit <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(Unit).map((v) => (
+                          <SelectItem key={v} value={v}>
+                            {v}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Category <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(IngredientCategory).map((v) => (
+                          <SelectItem className="capitalize" key={v} value={v}>
+                            {v}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
-              name="unit"
+              name="averageCost"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Unit <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.values(Unit).map((v) => (
-                        <SelectItem key={v} value={v}>
-                          {v}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Average Cost</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input placeholder="" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="allergenInfo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Allergen Info</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="nutritionalInfo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nutritional Info</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="" rows={3} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <SheetFooter>
               <Button type="submit" disabled={mutation.isPending}>
                 {mutation.isPending ? (

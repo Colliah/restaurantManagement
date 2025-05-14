@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  AlignStartVertical,
-  LogOut,
-  Maximize,
-  Minimize,
-  Search,
-} from "lucide-react";
+import { AlignStartVertical, Maximize, Minimize, Search } from "lucide-react";
 import { Input } from "../ui/input";
 import PosNotification from "./pos-notification";
 import { Button } from "../ui/button";
@@ -15,7 +9,6 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { AppSidebar } from "../sidebar/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import PosSettings from "./pos-settings";
-import { signOutCredentials } from "@/actions/auth";
 
 interface HeaderProps {
   isPOS?: boolean;

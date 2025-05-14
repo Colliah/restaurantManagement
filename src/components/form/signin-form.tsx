@@ -46,7 +46,7 @@ export default function SignInForm() {
 
         if (result?.success) {
           form.reset();
-          router.push("/admin/pos");
+          router.push("/pos");
           router.refresh();
         } else {
           console.error("Sign in failed:", result);
