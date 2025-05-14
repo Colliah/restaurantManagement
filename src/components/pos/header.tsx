@@ -1,6 +1,12 @@
 "use client";
 
-import { AlignStartVertical, Maximize, Minimize, Search } from "lucide-react";
+import {
+  AlignStartVertical,
+  LogOut,
+  Maximize,
+  Minimize,
+  Search,
+} from "lucide-react";
 import { Input } from "../ui/input";
 import PosNotification from "./pos-notification";
 import { Button } from "../ui/button";
@@ -9,7 +15,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { AppSidebar } from "../sidebar/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import PosSettings from "./pos-settings";
-import { ClerkLoading, SignedIn, UserButton } from "@clerk/nextjs";
+import { signOutCredentials } from "@/actions/auth";
 
 interface HeaderProps {
   isPOS?: boolean;
@@ -46,7 +52,11 @@ const Header = ({ isPOS = false }: HeaderProps) => {
             </SheetTrigger>
             <SheetContent buttonClose={false} side="left" className="w-[16rem]">
               <SidebarProvider>
-                <AppSidebar className="bg-card" variant="inset" collapsible="none" />
+                <AppSidebar
+                  className="bg-card"
+                  variant="inset"
+                  collapsible="none"
+                />
               </SidebarProvider>
             </SheetContent>
           </Sheet>
@@ -77,14 +87,6 @@ const Header = ({ isPOS = false }: HeaderProps) => {
           </Button>
 
           <PosSettings />
-
-          <ClerkLoading>
-            <div className="size-8 animate-pulse rounded-full bg-muted"></div>
-          </ClerkLoading>
-
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
         </div>
       </div>
     </div>
