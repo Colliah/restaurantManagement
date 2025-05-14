@@ -1,23 +1,22 @@
-"use client";
 import React from "react";
 import "./globals.css";
 import Providers from "@/components/providers/providers";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import { auth } from "@/auth";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className="bg-muted">
-          <Providers>{children}</Providers>
-          <Toaster />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-muted">
+        <Providers session={session}>{children}</Providers>
+        <Toaster />
+      </body>
+    </html>
   );
 }

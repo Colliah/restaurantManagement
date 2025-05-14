@@ -13,7 +13,7 @@ export default function PosSystem() {
 
   return (
     <div className="flex h-screen max-h-screen flex-col overflow-hidden">
-      <Header isPOS={true} />
+      {/* <Header isPOS={true} /> */}
       <div className="h-full w-full">
         <div className="flex h-full flex-1 flex-col">
           <div className="grid h-full grid-cols-3 gap-4 p-4">

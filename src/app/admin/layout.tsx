@@ -1,9 +1,17 @@
+import { auth } from "@/auth";
 import Header from "@/components/pos/header";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
+
+  if (!session) {
+    return redirect("/sign-in");
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar className="bg-card" />
@@ -14,4 +22,5 @@ const Layout = ({ children }: { children: ReactNode }) => {
     </SidebarProvider>
   );
 };
+
 export default Layout;
