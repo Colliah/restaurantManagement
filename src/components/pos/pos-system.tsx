@@ -16,7 +16,7 @@ export default function PosSystem() {
       <Header isPOS={true} />
       <div className="h-full w-full">
         <div className="flex h-full flex-1 flex-col">
-          <div className="grid h-full grid-cols-3 gap-4 p-4">
+          <div className="grid h-full grid-cols-3 gap-4 p-2">
             <div className="col-span-2 overflow-auto rounded-xl border bg-card shadow">
               <Tabs
                 className="mx-4 mt-4"

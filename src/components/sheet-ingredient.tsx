@@ -34,7 +34,7 @@ import { toast } from "sonner";
 import { queryClient } from "./providers/providers";
 import { useState } from "react";
 import { Edit, Loader2 } from "lucide-react";
-import { Ingredient } from "@/app/admin/ingredients/columns";
+import { Ingredient } from "@/app/(protect)/admin/ingredients/columns";
 import { IngredientCategory } from "@/enums/ingredient-category.enum";
 import { Textarea } from "./ui/textarea";
 
@@ -50,12 +50,14 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  unit: z.nativeEnum(Unit).optional(),
+  unit: z.nativeEnum(Unit),
   category: z.string().min(1, {
     message: "Category is required.",
   }),
   description: z.string().optional(),
-  averageCost: z.string().optional(),
+  averageCost: z.string().min(1, {
+    message: "Average cost is required.",
+  }),
   allergenInfo: z.string().optional(),
   nutritionalInfo: z.string().optional(),
 });

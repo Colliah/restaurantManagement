@@ -1,5 +1,5 @@
-import PosSystem from "@/components/pos/pos-system";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <PosSystem />;
+  return redirect("/pos");
 }

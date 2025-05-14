@@ -1,18 +1,48 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
 
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
+const { auth } = NextAuth(authConfig);
 
-export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) {
-    await auth.protect();
-  }
+export default auth(async (req) => {
+  // const { nextUrl } = req;
+  // const session = await auth();
+  // const isLoggedIn = !!session;
+
+  // const isPublicRoute =
+  //   ["/", "/sign-in"].includes(nextUrl.pathname) ||
+  //   nextUrl.pathname.startsWith("/api/auth");
+
+  // const isAdminRoute = nextUrl.pathname.startsWith("/admin");
+  // const isAdmin = session?.user?.role === "admin";
+
+  // if (!isLoggedIn && !isPublicRoute) {
+  //   return Response.redirect(new URL("/sign-in", nextUrl));
+  // }
+
+  // if (isPublicRoute) {
+  //   if (isLoggedIn && nextUrl.pathname === "/sign-in") {
+  //     return Response.redirect(new URL("/admin/pos", nextUrl));
+  //   }
+
+  //   return NextResponse.next();
+  // }
+
+  // if (isLoggedIn && isAdminRoute && !isAdmin) {
+  //   return Response.redirect(new URL("/", nextUrl));
+  // }
+
+  return NextResponse.next();
 });
 
 export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
-  ],
+  /*
+   * Match all request paths except for:
+   * - api (API routes)
+   * - _next (Next.js internals)
+   * - .*\..* (static files)
+   * - auth/sign-in (sign-in page)
+   * - auth/sign-up (sign-up page)
+   */
+  matcher: ["/((?!api|_next|.*\\..*|auth/sign-in|auth/sign-up).*)"],
 };

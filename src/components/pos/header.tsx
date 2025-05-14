@@ -9,7 +9,6 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { AppSidebar } from "../sidebar/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import PosSettings from "./pos-settings";
-import { ClerkLoading, SignedIn, UserButton } from "@clerk/nextjs";
 
 interface HeaderProps {
   isPOS?: boolean;
@@ -81,14 +80,6 @@ const Header = ({ isPOS = false }: HeaderProps) => {
           </Button>
 
           <PosSettings />
-
-          <ClerkLoading>
-            <div className="size-8 animate-pulse rounded-full bg-muted"></div>
-          </ClerkLoading>
-
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
         </div>
       </div>
     </div>

@@ -25,7 +25,7 @@ export type Ingredient = {
 
 const ActionCell = ({ row }: { row: Row<Ingredient> }) => {
   const mutationDelete = useMutation({
-    mutationFn: () => ingredientsApi.deleteIngredient(row.getValue("id")),
+    mutationFn: () => ingredientsApi.deleteIngredient(row.original.id),
     onSuccess: () => {
       toast.success("Ingredient deleted");
       queryClient.invalidateQueries({ queryKey: ["ingredients"] });

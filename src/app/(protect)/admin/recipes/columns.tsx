@@ -35,11 +35,6 @@ export const columns: ColumnDef<Recipe>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
-  },
-  {
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,

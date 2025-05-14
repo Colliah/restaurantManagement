@@ -38,7 +38,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Food } from "@/app/admin/menu-items/columns";
+import { Food } from "@/app/(protect)/admin/menu-items/columns";
 
 export default function MenuItemCard({ data }: { data: Food[] }) {
   return (
