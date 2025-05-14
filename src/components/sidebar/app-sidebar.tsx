@@ -83,7 +83,7 @@ const data = {
           items: [
             {
               title: "Manage",
-              url: "/admin/food/",
+              url: "/admin/menu-items/",
             },
           ],
         },

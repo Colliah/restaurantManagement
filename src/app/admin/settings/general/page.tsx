@@ -4,10 +4,10 @@ import TableSetting from "./_components/table-setting";
 export default function GeneralSettingsPage() {
   return (
     <Tabs value="tables">
-      <TabsList className="w-full p-0 bg-background justify-start border-b rounded-none">
+      <TabsList className="w-full justify-start rounded-none border-b bg-background p-0">
         <TabsTrigger
           value="tables"
-          className="rounded-none bg-background h-full data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-primary"
+          className="h-full rounded-none border-b-2 border-transparent bg-background data-[state=active]:border-primary data-[state=active]:shadow-none"
         >
           Tables
         </TabsTrigger>

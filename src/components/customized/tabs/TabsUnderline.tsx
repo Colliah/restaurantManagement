@@ -27,13 +27,13 @@ const tabs = [
 
 export default function TabsUnderlinedDemo() {
   return (
-    <Tabs defaultValue={tabs[0].value} className="max-w-xs w-full">
-      <TabsList className="w-full p-0 bg-background justify-start border-b rounded-none">
+    <Tabs defaultValue={tabs[0].value} className="w-full max-w-xs">
+      <TabsList className="w-full justify-start rounded-none border-b bg-background p-0">
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.value}
             value={tab.value}
-            className="rounded-none bg-background h-full data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-primary"
+            className="h-full rounded-none border-b-2 border-transparent bg-background data-[state=active]:border-primary data-[state=active]:shadow-none"
           >
             <code className="text-[13px]">{tab.name}</code>
           </TabsTrigger>
@@ -42,7 +42,7 @@ export default function TabsUnderlinedDemo() {
 
       {tabs.map((tab) => (
         <TabsContent key={tab.value} value={tab.value}>
-          <div className="h-10 flex items-center justify-between border gap-2 rounded-md pl-3 pr-1.5">
+          <div className="flex h-10 items-center justify-between gap-2 rounded-md border pl-3 pr-1.5">
             <code className="text-[13px]">{tab.content}</code>
             <Button size="icon" variant="secondary" className="h-7 w-7">
               <Copy className="!h-3.5 !w-3.5" />

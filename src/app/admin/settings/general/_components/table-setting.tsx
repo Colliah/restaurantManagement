@@ -112,7 +112,7 @@ export default function TableSetting() {
 
   return (
     <>
-      <div className="flex items-center mb-6">
+      <div className="mb-6 flex items-center">
         <Link href="/">
           <Button variant="outline" size="icon" className="mr-4">
             <ArrowLeft className="h-4 w-4" />
@@ -124,7 +124,7 @@ export default function TableSetting() {
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div>
               <CardTitle>Tables</CardTitle>
               <CardDescription>

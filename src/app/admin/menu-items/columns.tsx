@@ -44,28 +44,28 @@ export const columns: ColumnDef<Food>[] = [
     accessorKey: "description",
     header: "Description",
     cell: ({ row }) => (
-      <div className="text-left ml-6">{row.getValue("description")}</div>
+      <div className="ml-6 text-left">{row.getValue("description")}</div>
     ),
   },
   {
     accessorKey: "price",
     header: "Price",
     cell: ({ row }) => (
-      <div className="text-left ml-1">{row.getValue("price")}</div>
+      <div className="ml-1 text-left">{row.getValue("price")}</div>
     ),
   },
   {
     accessorKey: "category",
     header: "Category",
     cell: ({ row }) => (
-      <div className="text-left ml-3">{row.getValue("category")}</div>
+      <div className="ml-3 text-left">{row.getValue("category")}</div>
     ),
   },
   {
     accessorKey: "isAvailable",
     header: "Is Available",
     cell: ({ row }) => (
-      <div className="text-left ml-2">
+      <div className="ml-2 text-left">
         {row.getValue("isAvailable") ? "Available" : "Unavailable"}
       </div>
     ),
@@ -74,7 +74,7 @@ export const columns: ColumnDef<Food>[] = [
     accessorKey: "imageUrl",
     header: "Image Url",
     cell: ({ row }) => (
-      <div className="text-left ml-2">{row.getValue("imageUrl")}</div>
+      <div className="ml-2 text-left">{row.getValue("imageUrl")}</div>
     ),
   },
 ];

@@ -29,7 +29,7 @@ import {
   FileUploaderContent,
   FileUploaderItem,
 } from "./ui/file-upload";
-import { CloudUpload, Paperclip, X } from "lucide-react";
+import { CloudUpload, X } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -51,7 +51,11 @@ const formSchema = z.object({
   imageUrl: z.string(),
 });
 
-const SheetFood = () => {
+interface SheetMenuItemsProps {
+  mode: "create" | "edit";
+}
+
+const SheetMenuItems = ({ mode }: SheetMenuItemsProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
   const dropZoneConfig = {
     maxFiles: 5,
@@ -77,11 +81,13 @@ const SheetFood = () => {
   return (
     <Sheet>
       <SheetTrigger asChild className="ml-4">
-        <Button>Create</Button>
+        <Button>{mode === "create" ? "Create" : "Edit"}</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="mb-8">
-          <SheetTitle>Food</SheetTitle>
+          <SheetTitle>
+            {mode === "create" ? "Create menu item" : "Edit menu item"}
+          </SheetTitle>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
@@ -171,14 +177,14 @@ const SheetFood = () => {
                       value={files}
                       onValueChange={setFiles}
                       dropzoneOptions={dropZoneConfig}
-                      className="relative bg-background rounded-lg p-2"
+                      className="relative rounded-lg bg-background p-2"
                     >
                       <FileInput
                         id="fileInput"
                         className="outline-dashed outline-1 outline-slate-500"
                       >
-                        <div className="flex items-center justify-center flex-col p-8 w-full ">
-                          <CloudUpload className="text-gray-500 w-10 h-10" />
+                        <div className="flex w-full flex-col items-center justify-center p-8">
+                          <CloudUpload className="h-10 w-10 text-gray-500" />
                           <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
                             <span className="font-semibold">
                               Click to upload
@@ -190,22 +196,22 @@ const SheetFood = () => {
                           </p>
                         </div>
                       </FileInput>
-                      <FileUploaderContent className="flex-row gap-2 overflow-x-auto w-[300px]">
+                      <FileUploaderContent className="w-[300px] flex-row gap-2 overflow-x-auto">
                         {files &&
                           files.length > 0 &&
                           files.map((file, i) => {
                             const imageUrl = URL.createObjectURL(file);
                             return (
                               <FileUploaderItem key={i} index={i}>
-                                <div className="relative w-20 h-20">
+                                <div className="relative h-20 w-20">
                                   <img
                                     src={imageUrl}
                                     alt={file.name}
-                                    className="w-20 h-20 object-cover rounded-md"
+                                    className="h-20 w-20 rounded-md object-cover"
                                   />
                                   <button
                                     type="button"
-                                    className="absolute top-0 right-0 text-white bg-red-500 p-1 rounded-full"
+                                    className="absolute right-0 top-0 rounded-full bg-red-500 p-1 text-white"
                                     onClick={() => {
                                       const newFiles = files.filter(
                                         (_, index) => index !== i,
@@ -213,7 +219,7 @@ const SheetFood = () => {
                                       setFiles(newFiles);
                                     }}
                                   >
-                                    <X className="w-4 h-4" />
+                                    <X className="h-4 w-4" />
                                   </button>
                                 </div>
                               </FileUploaderItem>
@@ -238,4 +244,4 @@ const SheetFood = () => {
   );
 };
 
-export default SheetFood;
+export default SheetMenuItems;

@@ -2,6 +2,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -50,21 +51,13 @@ const formSchema = z.object({
     message: "Username must be at least 2 characters.",
   }),
   unit: z.nativeEnum(Unit).optional(),
-  category: z
-    .string()
-    .min(1, {
-      message: "Category is required.",
-    }),
-  description: z
-    .string()
-    .optional(),
-  averageCost: z.coerce.number().optional(),
-  allergenInfo: z
-    .string()
-    .optional(),
-  nutritionalInfo: z
-    .string()
-    .optional(),
+  category: z.string().min(1, {
+    message: "Category is required.",
+  }),
+  description: z.string().optional(),
+  averageCost: z.string().optional(),
+  allergenInfo: z.string().optional(),
+  nutritionalInfo: z.string().optional(),
 });
 
 interface SheetIngredientProps {
@@ -106,23 +99,23 @@ const SheetIngredient = ({
     defaultValues:
       mode === "create"
         ? {
-          name: "",
-          unit: undefined,
-          category: "",
-          description: "",
-          averageCost: 0,
-          allergenInfo: "",
-          nutritionalInfo: ""
-        }
+            name: "",
+            unit: undefined,
+            category: "",
+            description: "",
+            averageCost: "",
+            allergenInfo: "",
+            nutritionalInfo: "",
+          }
         : {
-          name: initialData?.name || "",
-          unit: initialData?.unit || undefined,
-          category: initialData?.category || "",
-          description: initialData?.description || "",
-          averageCost: initialData?.averageCost || 0,
-          allergenInfo: initialData?.allergenInfo || "",
-          nutritionalInfo: initialData?.nutritionalInfo || "",
-        },
+            name: initialData?.name || "",
+            unit: initialData?.unit || undefined,
+            category: initialData?.category || "",
+            description: initialData?.description || "",
+            averageCost: initialData?.averageCost || "",
+            allergenInfo: initialData?.allergenInfo || "",
+            nutritionalInfo: initialData?.nutritionalInfo || "",
+          },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -131,7 +124,7 @@ const SheetIngredient = ({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild className="ml-4">
+      <SheetTrigger asChild>
         {mode === "create" ? (
           <Button>Create</Button>
         ) : (
@@ -143,6 +136,9 @@ const SheetIngredient = ({
       <SheetContent className="!w-[50%]">
         <SheetHeader className="mb-8">
           <SheetTitle>Ingredients</SheetTitle>
+          <SheetDescription>
+            {mode === "create" ? "Create new ingredient" : "Edit ingredient"}
+          </SheetDescription>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -223,17 +219,14 @@ const SheetIngredient = ({
               />
             </div>
 
-
             <FormField
               control={form.control}
               name="averageCost"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Average Cost
-                  </FormLabel>
+                  <FormLabel>Average Cost</FormLabel>
                   <FormControl>
-                    <Input placeholder="" type="number" {...field} />
+                    <Input placeholder="" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -245,9 +238,7 @@ const SheetIngredient = ({
               name="allergenInfo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Allergen Info
-                  </FormLabel>
+                  <FormLabel>Allergen Info</FormLabel>
                   <FormControl>
                     <Input placeholder="" type="text" {...field} />
                   </FormControl>
@@ -261,9 +252,7 @@ const SheetIngredient = ({
               name="nutritionalInfo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Nutritional Info
-                  </FormLabel>
+                  <FormLabel>Nutritional Info</FormLabel>
                   <FormControl>
                     <Input placeholder="" type="text" {...field} />
                   </FormControl>
@@ -277,9 +266,7 @@ const SheetIngredient = ({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Description
-                  </FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea placeholder="" rows={3} {...field} />
                   </FormControl>

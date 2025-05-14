@@ -2,7 +2,13 @@
 import * as React from "react";
 import DataTable from "./data-table";
 import { columns, Recipe } from "./columns";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 const data: Recipe[] = [
   {
     id: "1",
@@ -28,7 +34,11 @@ function RecipesPage() {
     <Card>
       <CardHeader>
         <CardTitle>Recipes</CardTitle>
-        <CardDescription>Manage all menu entries in one place. Add or update item names, prices, descriptions, ingredients, and full recipes to ensure consistency in preparation and presentation.</CardDescription>
+        <CardDescription>
+          Manage all menu entries in one place. Add or update item names,
+          prices, descriptions, ingredients, and full recipes to ensure
+          consistency in preparation and presentation.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <DataTable columns={columns} data={data} />

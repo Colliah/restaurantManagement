@@ -46,7 +46,11 @@ const Header = ({ isPOS = false }: HeaderProps) => {
             </SheetTrigger>
             <SheetContent buttonClose={false} side="left" className="w-[16rem]">
               <SidebarProvider>
-                <AppSidebar className="bg-card" variant="inset" collapsible="none" />
+                <AppSidebar
+                  className="bg-card"
+                  variant="inset"
+                  collapsible="none"
+                />
               </SidebarProvider>
             </SheetContent>
           </Sheet>
